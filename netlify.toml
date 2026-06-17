@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Environment variables — set these in Netlify UI:
+# Site → Environment Variables (do NOT commit real values here)
+#
+#   NEXT_PUBLIC_SUPABASE_URL
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY
+#   NEXT_PUBLIC_POSTHOG_KEY
+#   NEXT_PUBLIC_POSTHOG_HOST
+#   NEXT_PUBLIC_APP_URL   ← set to your Netlify domain (e.g. https://fertapp.netlify.app)
+#
+# After deploying, add your Netlify domain to:
+#   Supabase → Authentication → URL Configuration → Redirect URLs
+#   e.g.  https://fertapp.netlify.app/auth/callback
+# ─────────────────────────────────────────────────────────────────────────────
