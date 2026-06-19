@@ -227,29 +227,28 @@ export default function CareClient({ province }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {ONTARIO_CLINICS.map((clinic) => (
             <Card key={clinic.name} padding="sm">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="font-semibold text-charcoal-800 text-sm">{clinic.name}</h3>
-                  <p className="text-xs text-charcoal-500 mt-0.5">{clinic.city}, ON</p>
-                  {clinic.phone && (
-                    <a
-                      href={`tel:${clinic.phone}`}
-                      className="flex items-center gap-1.5 text-xs text-teal-600 mt-1.5 hover:underline"
-                      onClick={() => track("care_link_clicked", { clinic: clinic.name, action: "phone" })}
-                    >
-                      <Phone size={12} />
-                      {clinic.phone}
-                    </a>
-                  )}
-                </div>
+              <h3 className="font-semibold text-charcoal-800 text-sm">{clinic.name}</h3>
+              <p className="text-xs text-charcoal-500 mt-0.5 mb-3">{clinic.city}, ON</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                {clinic.phone && (
+                  <a
+                    href={`tel:${clinic.phone}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-charcoal-600 bg-charcoal-100 hover:bg-charcoal-200 active:bg-charcoal-300 px-3 py-1.5 rounded-lg transition-colors"
+                    onClick={() => track("care_link_clicked", { clinic: clinic.name, action: "phone" })}
+                  >
+                    <Phone size={12} />
+                    {clinic.phone}
+                  </a>
+                )}
                 <a
                   href={clinic.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-shrink-0 w-8 h-8 rounded-xl bg-charcoal-100 flex items-center justify-center hover:bg-teal-50 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 active:bg-teal-200 px-3 py-1.5 rounded-lg transition-colors"
                   onClick={() => track("care_link_clicked", { clinic: clinic.name, action: "website" })}
                 >
-                  <Globe size={14} className="text-charcoal-500" />
+                  <Globe size={12} />
+                  Visit website
                 </a>
               </div>
             </Card>

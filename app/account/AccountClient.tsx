@@ -15,7 +15,6 @@ import {
   Shield,
   CheckCircle,
   AlertCircle,
-  ChevronRight,
 } from "lucide-react";
 
 const PROVINCES = [
@@ -251,23 +250,6 @@ export default function AccountClient({ profile }: Props) {
           </a>
         </p>
       </Card>
-
-      {/* Support link */}
-      <a href="/support">
-        <Card className="hover:border-teal-200 transition-colors cursor-pointer">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold text-charcoal-800">
-                Help & Support
-              </p>
-              <p className="text-xs text-charcoal-400 mt-0.5">
-                Contact us or ask a question
-              </p>
-            </div>
-            <ChevronRight size={16} className="text-charcoal-400" />
-          </div>
-        </Card>
-      </a>
 
       {/* Sign out */}
       <Card className="border-red-100 bg-red-50">

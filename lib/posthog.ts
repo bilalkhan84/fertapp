@@ -70,4 +70,6 @@ export type AppEvent =
   | "care_link_clicked"
   | "support_submitted"
   | "week_completed"
+  | "supplement_buy_clicked"
+  | "recommendation_clicked"
   | "pageview";
