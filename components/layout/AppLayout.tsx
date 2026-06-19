@@ -25,6 +25,7 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
         isOpen={mobileMenuOpen}
         isDesktopOpen={desktopSidebarOpen}
         onClose={() => setMobileMenuOpen(false)}
+        onToggleDesktop={() => setDesktopSidebarOpen((v) => !v)}
       />
 
       {/* Mobile overlay backdrop */}

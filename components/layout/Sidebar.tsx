@@ -11,6 +11,7 @@ import {
   UserCircle,
   Leaf,
   X,
+  Menu,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -26,9 +27,10 @@ interface Props {
   isOpen?: boolean;
   isDesktopOpen?: boolean;
   onClose?: () => void;
+  onToggleDesktop?: () => void;
 }
 
-export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose }: Props) {
+export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose, onToggleDesktop }: Props) {
   const pathname = usePathname();
 
   return (
@@ -41,7 +43,7 @@ export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose 
         isDesktopOpen ? "md:translate-x-0" : "md:-translate-x-full",
       ].join(" ")}
     >
-      {/* Logo + mobile close button */}
+      {/* Logo + toggle button */}
       <div className="flex items-center justify-between px-2 mb-8">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-xl bg-teal-600 flex items-center justify-center flex-shrink-0">
@@ -51,12 +53,21 @@ export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose 
             FertTrack
           </span>
         </div>
+        {/* Mobile: X to close drawer */}
         <button
           className="md:hidden p-1.5 rounded-xl text-charcoal-400 hover:text-charcoal-600 hover:bg-charcoal-50 transition-colors"
           onClick={onClose}
           aria-label="Close menu"
         >
           <X size={18} />
+        </button>
+        {/* Desktop: hamburger to collapse sidebar */}
+        <button
+          className="hidden md:flex p-1.5 rounded-xl text-charcoal-400 hover:text-charcoal-600 hover:bg-charcoal-50 transition-colors"
+          onClick={onToggleDesktop}
+          aria-label="Collapse sidebar"
+        >
+          <Menu size={18} />
         </button>
       </div>
 

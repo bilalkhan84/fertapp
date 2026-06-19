@@ -184,44 +184,61 @@ function getRecommendations(result: SemenResult | null, todayActs: DailyActions 
 function WelcomeIllustration() {
   return (
     <svg
-      viewBox="0 0 110 100"
+      viewBox="0 0 120 110"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-24 h-24 flex-shrink-0"
+      className="w-32 h-32 flex-shrink-0 drop-shadow-sm"
       aria-hidden="true"
     >
-      {/* Background soft circles */}
-      <circle cx="90" cy="18" r="32" fill="white" fillOpacity="0.07" />
-      <circle cx="14" cy="82" r="20" fill="white" fillOpacity="0.05" />
+      {/* Glowing background circles */}
+      <circle cx="95" cy="20" r="38" fill="white" fillOpacity="0.10" />
+      <circle cx="12" cy="88" r="26" fill="white" fillOpacity="0.07" />
+      <circle cx="60" cy="55" r="50" fill="white" fillOpacity="0.04" />
 
-      {/* DNA helix — left accent */}
-      <circle cx="19" cy="22" r="2.5" fill="white" fillOpacity="0.55" />
-      <circle cx="28" cy="31" r="2"   fill="white" fillOpacity="0.45" />
-      <circle cx="19" cy="40" r="2.5" fill="white" fillOpacity="0.55" />
-      <circle cx="28" cy="49" r="2"   fill="white" fillOpacity="0.45" />
-      <line x1="19" y1="22" x2="28" y2="31" stroke="white" strokeOpacity="0.28" strokeWidth="1" />
-      <line x1="28" y1="31" x2="19" y2="40" stroke="white" strokeOpacity="0.28" strokeWidth="1" />
-      <line x1="19" y1="40" x2="28" y2="49" stroke="white" strokeOpacity="0.28" strokeWidth="1" />
+      {/* DNA helix — left accent, more vibrant */}
+      <circle cx="18" cy="20" r="3.5" fill="white" fillOpacity="0.75" />
+      <circle cx="29" cy="31" r="2.5" fill="white" fillOpacity="0.60" />
+      <circle cx="18" cy="42" r="3.5" fill="white" fillOpacity="0.75" />
+      <circle cx="29" cy="53" r="2.5" fill="white" fillOpacity="0.60" />
+      <circle cx="18" cy="64" r="3"   fill="white" fillOpacity="0.65" />
+      <line x1="18" y1="20" x2="29" y2="31" stroke="white" strokeOpacity="0.45" strokeWidth="1.5" />
+      <line x1="29" y1="31" x2="18" y2="42" stroke="white" strokeOpacity="0.45" strokeWidth="1.5" />
+      <line x1="18" y1="42" x2="29" y2="53" stroke="white" strokeOpacity="0.45" strokeWidth="1.5" />
+      <line x1="29" y1="53" x2="18" y2="64" stroke="white" strokeOpacity="0.40" strokeWidth="1.5" />
 
-      {/* Person — head */}
-      <circle cx="68" cy="28" r="14" fill="white" fillOpacity="0.92" />
-      {/* Subtle smile */}
-      <path d="M63 33 Q68 38 73 33" stroke="rgba(13,148,136,0.3)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* Person — head, brighter */}
+      <circle cx="72" cy="30" r="17" fill="white" fillOpacity="0.95" />
+      {/* Eyes */}
+      <circle cx="67" cy="27" r="1.8" fill="rgba(13,148,136,0.35)" />
+      <circle cx="77" cy="27" r="1.8" fill="rgba(13,148,136,0.35)" />
+      {/* Smile */}
+      <path d="M66 34 Q72 40 78 34" stroke="rgba(13,148,136,0.45)" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Person — shoulders / body */}
-      <path d="M46 78 Q48 58 68 58 Q88 58 90 78 Z" fill="white" fillOpacity="0.92" />
+      {/* Person — body / shoulders */}
+      <path d="M48 85 Q50 62 72 62 Q94 62 96 85 Z" fill="white" fillOpacity="0.95" />
 
-      {/* Growth plant — right accent */}
-      <line x1="96" y1="92" x2="96" y2="65" stroke="white" strokeOpacity="0.6" strokeWidth="2" strokeLinecap="round" />
-      <path d="M96 79 C90 74 86 67 89 61" stroke="white" strokeOpacity="0.6" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M96 73 C102 68 106 61 103 55" stroke="white" strokeOpacity="0.6" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <circle cx="88" cy="60" r="3" fill="white" fillOpacity="0.5" />
-      <circle cx="103" cy="54" r="3" fill="white" fillOpacity="0.5" />
+      {/* Heart pulse line — across chest */}
+      <polyline points="52,76 58,76 61,69 65,82 69,72 73,76 96,76"
+        stroke="rgba(13,148,136,0.5)" strokeWidth="2" fill="none"
+        strokeLinecap="round" strokeLinejoin="round" />
 
-      {/* Sparkle dots */}
-      <circle cx="42" cy="11" r="2"   fill="white" fillOpacity="0.55" />
-      <circle cx="56" cy="7"  r="1.5" fill="white" fillOpacity="0.4" />
-      <circle cx="38" cy="88" r="1.5" fill="white" fillOpacity="0.3" />
+      {/* Growth plant — right accent, taller */}
+      <line x1="106" y1="100" x2="106" y2="68" stroke="white" strokeOpacity="0.75" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M106 86 C98 80 93 71 97 63" stroke="white" strokeOpacity="0.70" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M106 78 C114 72 118 63 114 55" stroke="white" strokeOpacity="0.70" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <circle cx="96" cy="62" r="4" fill="white" fillOpacity="0.65" />
+      <circle cx="114" cy="54" r="4" fill="white" fillOpacity="0.65" />
+
+      {/* Sparkles — more of them, brighter */}
+      <circle cx="44" cy="10" r="2.5" fill="white" fillOpacity="0.75" />
+      <circle cx="58" cy="5"  r="2"   fill="white" fillOpacity="0.60" />
+      <circle cx="90" cy="8"  r="1.5" fill="white" fillOpacity="0.55" />
+      <circle cx="36" cy="96" r="2"   fill="white" fillOpacity="0.45" />
+      <circle cx="108" cy="40" r="1.5" fill="white" fillOpacity="0.50" />
+
+      {/* Star sparkle top-right */}
+      <path d="M100 14 L101.2 17.6 L105 17.6 L102 19.8 L103.2 23.4 L100 21.2 L96.8 23.4 L98 19.8 L95 17.6 L98.8 17.6 Z"
+        fill="white" fillOpacity="0.65" />
     </svg>
   );
 }
