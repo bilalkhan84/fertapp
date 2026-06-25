@@ -47,7 +47,7 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
       <div className="bg-teal-600 text-white text-xs text-center py-1.5 px-4 font-medium tracking-wide">
         🧬 FertTrack is in beta —{" "}
         <a
-          href="https://form.typeform.com/to/UnHUvAfv"
+          href="https://form.typeform.com/to/FFZjDlj9"
           target="_blank"
           rel="noopener noreferrer"
           className="underline font-semibold hover:opacity-80"
