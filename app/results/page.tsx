@@ -8,18 +8,21 @@ export default async function ResultsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: results } = await supabase
-    .from("semen_results")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("result_date", { ascending: false });
+  const [resultsRes, profileRes] = await Promise.all([
+    supabase.from("semen_results").select("*").eq("user_id", user.id).order("result_date", { ascending: false }),
+    supabase.from("profiles").select("province").eq("id", user.id).single(),
+  ]);
 
   return (
     <AppLayout
       title="My Results"
       subtitle="Track your semen analysis results over time."
     >
-      <ResultsClient initialResults={results ?? []} userId={user.id} />
+      <ResultsClient
+        initialResults={resultsRes.data ?? []}
+        userId={user.id}
+        province={profileRes.data?.province ?? "Ontario"}
+      />
     </AppLayout>
   );
 }
