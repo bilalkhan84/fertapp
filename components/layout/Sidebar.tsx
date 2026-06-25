@@ -11,7 +11,6 @@ import {
   UserCircle,
   Leaf,
   X,
-  Menu,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -61,14 +60,7 @@ export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose,
         >
           <X size={18} />
         </button>
-        {/* Desktop: hamburger to collapse sidebar */}
-        <button
-          className="hidden md:flex p-1.5 rounded-xl text-charcoal-400 hover:text-charcoal-600 hover:bg-charcoal-50 transition-colors"
-          onClick={onToggleDesktop}
-          aria-label="Collapse sidebar"
-        >
-          <Menu size={18} />
-        </button>
+
       </div>
 
       {/* Nav */}
