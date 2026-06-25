@@ -43,7 +43,20 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
           desktopSidebarOpen ? "md:ml-60" : "md:ml-0",
         ].join(" ")}
       >
-        {/* ── Mobile top bar ────────────────────────────────────── */}
+        {/* ── Beta banner ──────────────────────────────────────── */}
+      <div className="bg-teal-600 text-white text-xs text-center py-1.5 px-4 font-medium tracking-wide">
+        🧬 FertTrack is in beta —{" "}
+        <a
+          href="https://form.typeform.com/to/UnHUvAfv"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline font-semibold hover:opacity-80"
+        >
+          share your feedback
+        </a>
+      </div>
+
+      {/* ── Mobile top bar ────────────────────────────────────── */}
         <div className="md:hidden flex items-center gap-2 px-4 pt-5 pb-2 bg-offwhite sticky top-0 z-20 border-b border-charcoal-100">
           <button
             onClick={() => setMobileMenuOpen(true)}
