@@ -109,7 +109,7 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
         </div>
 
         {/* ── Page content ──────────────────────────────────────── */}
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 md:pt-6">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 md:pt-6 pb-6">
           {subtitle && (
             <p className="text-sm text-charcoal-500 mb-4 md:mb-6">{subtitle}</p>
           )}
@@ -117,7 +117,7 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
         </div>
 
         {/* Legal disclaimer footer */}
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 mt-8 mb-2">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 mt-4 mb-2">
           <div className="border-t border-charcoal-100 pt-4">
             <p className="text-xs text-charcoal-400 text-center leading-relaxed">
               FertTrack is for informational purposes only and does not constitute medical advice, diagnosis, or treatment.
