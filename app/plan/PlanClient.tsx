@@ -4,11 +4,12 @@ import { track } from "@/lib/posthog";
 import { FertilityPlan } from "@/types";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
-import { CheckCircle, Circle, Pill, Dumbbell, Moon, Thermometer, FlaskConical, Calendar, ShoppingCart } from "lucide-react";
+import { CheckCircle, Circle, Pill, Dumbbell, Moon, Thermometer, FlaskConical, Calendar, ShoppingCart, MapPin } from "lucide-react";
 
 interface Props {
   initialPlan: FertilityPlan | null;
   userId: string;
+  province: string;
 }
 
 const WEEKLY_PHASES = [
@@ -133,20 +134,37 @@ function WeekBadge({ week, complete, current }: { week: number; complete: boolea
   );
 }
 
-export default function PlanClient({ initialPlan, userId: _userId }: Props) {
+export default function PlanClient({ initialPlan, userId: _userId, province }: Props) {
   const plan = initialPlan;
 
-  const currentDay = plan?.day_number ?? 1;
-  const currentWeek = Math.ceil(currentDay / 7);
-  const progress = plan?.progress_percent ?? 0;
+  // Compute current day dynamically from start_date so progress advances automatically
+  const currentDay = (() => {
+    if (!plan?.start_date) return plan?.day_number ?? 1;
+    const start = new Date(plan.start_date);
+    const now = new Date();
+    const days = Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    return Math.min(Math.max(days, 1), 91);
+  })();
+  const currentWeek = Math.min(Math.ceil(currentDay / 7), 13);
+  const progress = Math.round((currentDay / 91) * 100);
 
-  // Weeks before the current week are complete; current week is in-progress
+  // Weeks up to and including the current week are marked complete
   function isWeekComplete(weekNum: number): boolean {
     return weekNum < currentWeek;
   }
 
   return (
     <div className="space-y-6">
+      {/* Non-Ontario notice */}
+      {province !== "Ontario" && (
+        <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-100 rounded-2xl">
+          <MapPin size={17} className="text-amber-600 mt-0.5 flex-shrink-0" />
+          <p className="text-sm text-amber-800">
+            <strong>You indicated you&apos;re in {province}.</strong> FertTrack is currently focused on Ontario — full coverage for your province is coming soon. The plan below is what Ontario users follow and is a useful reference wherever you are.
+          </p>
+        </div>
+      )}
+
       {/* Progress header */}
       {plan && (
         <Card className="bg-gradient-to-br from-charcoal-800 to-charcoal-900 text-white border-0">
