@@ -374,6 +374,16 @@ export default function DashboardClient({
 
   return (
     <div className="space-y-5">
+      {/* Non-Ontario notice */}
+      {profile?.province && profile.province !== "Ontario" && (
+        <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-100 rounded-2xl">
+          <MapPin size={17} className="text-amber-600 mt-0.5 flex-shrink-0" />
+          <p className="text-sm text-amber-800">
+            <strong>You indicated you&apos;re in {profile.province}.</strong> FertTrack is currently focused on Ontario — full coverage and analysis for your province is coming soon. The guidance below reflects what Ontario users see as a reference.
+          </p>
+        </div>
+      )}
+
       {/* Hero: greeting + illustration + plan progress */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-700 px-5 pt-5 pb-5">
         <div className="flex items-start justify-between gap-3">

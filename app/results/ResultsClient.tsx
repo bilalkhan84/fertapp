@@ -8,11 +8,12 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
-import { FlaskConical, Plus, X, Info, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
+import { FlaskConical, Plus, X, Info, CheckCircle, AlertTriangle, XCircle, MapPin } from "lucide-react";
 
 interface Props {
   initialResults: SemenResult[];
   userId: string;
+  province: string;
 }
 
 const EXPLAINERS = [
@@ -64,7 +65,7 @@ const DOCTOR_QUESTIONS = [
   "Are there any medications or exposures that could be affecting my results?",
 ];
 
-export default function ResultsClient({ initialResults, userId }: Props) {
+export default function ResultsClient({ initialResults, userId, province }: Props) {
   const [results, setResults] = useState<SemenResult[]>(initialResults);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -123,6 +124,16 @@ export default function ResultsClient({ initialResults, userId }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Non-Ontario notice */}
+      {province !== "Ontario" && (
+        <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-100 rounded-2xl">
+          <MapPin size={17} className="text-amber-600 mt-0.5 flex-shrink-0" />
+          <p className="text-sm text-amber-800">
+            <strong>You indicated you&apos;re in {province}.</strong> FertTrack is currently focused on Ontario — full analysis and coverage for your province is coming soon. You can still log and track your results here.
+          </p>
+        </div>
+      )}
+
       {/* Add result button */}
       <div className="flex justify-end">
         <Button onClick={() => setShowForm(!showForm)} variant={showForm ? "ghost" : "primary"} size="md">
