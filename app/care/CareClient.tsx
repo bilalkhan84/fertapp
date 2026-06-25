@@ -135,13 +135,25 @@ interface Props {
 export default function CareClient({ province }: Props) {
   return (
     <div className="space-y-6">
-      {/* Ontario banner */}
-      {province === "Ontario" && (
+      {/* Province banner */}
+      {province === "Ontario" ? (
         <div className="flex items-start gap-3 px-4 py-3 bg-teal-50 border border-teal-100 rounded-2xl">
           <MapPin size={17} className="text-teal-600 mt-0.5 flex-shrink-0" />
           <p className="text-sm text-teal-800">
-            <strong>You're in Ontario</strong> — you have access to some of the best fertility care in Canada, plus the Ontario Fertility Program which funds one IVF cycle.
+            <strong>You&apos;re in Ontario</strong> — you have access to some of the best fertility care in Canada, plus the Ontario Fertility Program which funds one IVF cycle.
           </p>
+        </div>
+      ) : (
+        <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-100 rounded-2xl">
+          <MapPin size={17} className="text-amber-600 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-amber-800 mb-1">You indicated you&apos;re in {province}</p>
+            <p className="text-sm text-amber-700">
+              FertTrack is currently focused on Ontario care and coverage — we&apos;ll be expanding to your province soon.
+              For now, please speak with your family doctor or visit your provincial health authority for fertility care guidance.
+              The pathway below reflects Ontario and is a useful reference for questions to ask your own provider.
+            </p>
+          </div>
         </div>
       )}
 
