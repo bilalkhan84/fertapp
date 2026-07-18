@@ -46,6 +46,15 @@ export async function middleware(request: NextRequest) {
   const isProtected = PROTECTED_PREFIXES.some((prefix) =>
     pathname.startsWith(prefix)
   );
+  const isLoginPage = pathname === "/login";
+
+  // Public marketing pages (/, /contact, /blog, /api/*, etc.) don't need a
+  // session at all — skip the Supabase round trip entirely so they load as
+  // fast as a static page. Only protected routes and /login (which redirects
+  // signed-in users away) need the auth check below.
+  if (!isProtected && !isLoginPage) {
+    return supabaseResponse;
+  }
 
   let user = null;
   try {

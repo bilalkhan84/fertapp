@@ -90,12 +90,12 @@ const COVERAGE_BASICS = [
   {
     item: "One IVF cycle",
     covered: "partial",
-    notes: "Ontario Fertility Program — one cycle funded, medication costs not included (~$4,000–$7,000)",
+    notes: "Ontario Fertility Program — one cycle funded, medication costs not included (~$5,000/cycle)",
   },
   {
     item: "IUI (intrauterine insemination)",
-    covered: false,
-    notes: "Not covered; typically $800–$1,500 per cycle",
+    covered: "partial",
+    notes: "Covered by OHIP via the Ontario Fertility Program — no limit on the number of cycles. Fertility drugs (~$1,000/cycle) are not included.",
   },
   {
     item: "Sperm DNA fragmentation test",

@@ -223,10 +223,7 @@ export default async function HomePage() {
           </p>
           <div className="mt-8">
             <Link href="/login">
-              <Button
-                size="lg"
-                className="bg-white text-teal-700 hover:bg-teal-50"
-              >
+              <Button size="lg" variant="secondary">
                 Get Started
               </Button>
             </Link>
