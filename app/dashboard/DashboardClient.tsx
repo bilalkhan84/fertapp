@@ -392,7 +392,7 @@ export default function DashboardClient({
               Day {dayNumber} of 90
             </p>
             <h1 className="text-2xl font-bold text-white leading-tight">
-              Good morning,<br />{firstName}
+              Hello,<br />{firstName}
             </h1>
             <p className="text-teal-200 text-sm mt-1.5">
               {profile?.province ?? "Ontario"}
@@ -429,6 +429,83 @@ export default function DashboardClient({
           </>
         )}
       </div>
+
+      {/* Your journey — guided next step */}
+      {(() => {
+        // Step 1 until a result is added; step 2 while the plan is underway;
+        // step 3 nudge once they're past the halfway mark.
+        const currentStep = !latestResult ? 1 : progress < 50 ? 2 : 3;
+        const steps = [
+          {
+            n: 1,
+            Icon: FlaskConical,
+            title: "Check your results",
+            desc: latestResult ? "Results added — review anytime" : "See what your numbers mean",
+            href: "/results",
+          },
+          {
+            n: 2,
+            Icon: TrendingUp,
+            title: "Follow your plan",
+            desc: "Weekly focus for 13 weeks",
+            href: "/plan",
+          },
+          {
+            n: 3,
+            Icon: HeartPulse,
+            title: "Determine your coverage",
+            desc: "What OHIP pays for, what's next",
+            href: "/care",
+          },
+        ];
+        const cta = steps[currentStep - 1];
+        return (
+          <Card padding="md">
+            <p className="text-sm font-bold text-charcoal-800 mb-3">Your journey</p>
+            <div className="space-y-2.5">
+              {steps.map(({ n, Icon, title, desc, href }) => {
+                const isCurrent = n === currentStep;
+                const isDone = n < currentStep;
+                return (
+                  <Link
+                    key={n}
+                    href={href}
+                    onClick={() => track("journey_step_clicked", { step: n, title })}
+                    className="flex items-center gap-3 group"
+                  >
+                    <div
+                      className={[
+                        "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors",
+                        isCurrent
+                          ? "bg-teal-600 text-white"
+                          : isDone
+                          ? "bg-teal-100 text-teal-700"
+                          : "bg-charcoal-100 text-charcoal-400",
+                      ].join(" ")}
+                    >
+                      {isDone ? <CheckCircle size={16} /> : <Icon size={16} />}
+                    </div>
+                    <div className={["flex-1 min-w-0", isCurrent ? "" : "opacity-75"].join(" ")}>
+                      <p className="text-sm font-semibold text-charcoal-800 group-hover:text-teal-700 transition-colors">
+                        {n}. {title}
+                      </p>
+                      <p className="text-xs text-charcoal-400">{desc}</p>
+                    </div>
+                    {isCurrent && <Badge label="You are here" variant="teal" />}
+                  </Link>
+                );
+              })}
+            </div>
+            <Link
+              href={cta.href}
+              onClick={() => track("journey_cta_clicked", { step: currentStep })}
+              className="mt-4 flex items-center justify-center gap-1.5 w-full bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-sm font-semibold rounded-xl py-2.5 transition-colors"
+            >
+              {cta.title} <ArrowRight size={14} />
+            </Link>
+          </Card>
+        );
+      })()}
 
       {/* Result metrics */}
       <div>

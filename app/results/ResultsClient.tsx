@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { track } from "@/lib/posthog";
 import { SemenResult, WHO_REFERENCE, classifyResult } from "@/types";
@@ -8,7 +9,7 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
-import { FlaskConical, Plus, X, Info, CheckCircle, AlertTriangle, XCircle, MapPin } from "lucide-react";
+import { FlaskConical, Plus, X, Info, CheckCircle, AlertTriangle, XCircle, MapPin, ArrowRight, ShoppingCart } from "lucide-react";
 
 interface Props {
   initialResults: SemenResult[];
@@ -217,6 +218,88 @@ export default function ResultsClient({ initialResults, userId, province }: Prop
           </div>
         </div>
       )}
+
+      {/* Next step: results → plan (+ targeted supplement) */}
+      {latest && (() => {
+        // Find the weakest metric to personalize the hand-off to the plan.
+        const order = { low: 0, borderline: 1, normal: 2 } as const;
+        const metrics = (["sperm_count", "motility", "morphology", "volume"] as const)
+          .map((key) => ({ key, cat: classifyResult(latest[key], key) }))
+          .filter((m) => latest[m.key] !== null && latest[m.key] !== undefined)
+          .sort((a, b) => order[a.cat] - order[b.cat]);
+        const weakest = metrics[0];
+        const allNormal = !weakest || weakest.cat === "normal";
+
+        const focusCopy: Record<string, { line: string; supplement: string; shopHref: string }> = {
+          sperm_count: {
+            line: "Your sperm count needs attention — your plan's early weeks focus on the habits that rebuild it.",
+            supplement: "CoQ10 + Zinc stack",
+            shopHref: "https://www.amazon.ca/s?k=CoQ10+Ubiquinol+200mg&i=hpc&tag=ferttrack-20",
+          },
+          motility: {
+            line: "Your motility is the metric to work on — weeks 3–6 of your plan target exactly that.",
+            supplement: "CoQ10 + L-Carnitine stack",
+            shopHref: "https://www.amazon.ca/s?k=CoQ10+L-Carnitine+supplement&i=hpc&tag=ferttrack-20",
+          },
+          morphology: {
+            line: "Your morphology has room to improve — your plan pairs folate with the habits that support it.",
+            supplement: "5-MTHF Methylfolate",
+            shopHref: "https://www.amazon.ca/s?k=5-MTHF+methylfolate+supplement&i=hpc&tag=ferttrack-20",
+          },
+          volume: {
+            line: "Your volume is below range — your plan's hydration and timing habits directly support it.",
+            supplement: "Zinc + Omega-3 stack",
+            shopHref: "https://www.amazon.ca/s?k=zinc+omega+3+mens+supplement&i=hpc&tag=ferttrack-20",
+          },
+        };
+        const focus = weakest && !allNormal ? focusCopy[weakest.key] : null;
+
+        return (
+          <div className="space-y-3">
+            <div className="rounded-3xl bg-gradient-to-br from-teal-600 to-teal-800 p-5">
+              <p className="text-teal-100 text-xs font-bold uppercase tracking-wider">Next step</p>
+              <p className="text-white text-base font-bold mt-1">Your results shape your plan</p>
+              <p className="text-teal-100 text-sm mt-1 leading-relaxed">
+                {focus
+                  ? focus.line
+                  : "Everything's in range — your plan keeps it that way through your week-13 retest."}
+              </p>
+              <Link
+                href="/plan"
+                onClick={() => track("results_to_plan_clicked", { weakest: weakest?.key ?? "none" })}
+                className="mt-3.5 flex items-center justify-center gap-1.5 w-full bg-white text-teal-700 hover:bg-teal-50 text-sm font-semibold rounded-xl py-2.5 transition-colors"
+              >
+                See your 90-day plan <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            {focus && weakest && (
+              <Card padding="sm">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                    <ShoppingCart size={16} className="text-green-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-charcoal-800">
+                      Targeted for your {WHO_REFERENCE[weakest.key].label.toLowerCase()}
+                    </p>
+                    <p className="text-xs text-charcoal-500">{focus.supplement}</p>
+                  </div>
+                  <a
+                    href={focus.shopHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track("results_supplement_clicked", { metric: weakest.key })}
+                    className="flex-shrink-0 text-xs font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 active:bg-teal-200 px-3.5 py-2 rounded-lg transition-colors"
+                  >
+                    Shop
+                  </a>
+                </div>
+              </Card>
+            )}
+          </div>
+        );
+      })()}
 
       {/* History table */}
       {results.length > 1 && (

@@ -72,4 +72,13 @@ export type AppEvent =
   | "week_completed"
   | "supplement_buy_clicked"
   | "recommendation_clicked"
+  | "journey_step_clicked"
+  | "journey_cta_clicked"
+  | "results_to_plan_clicked"
+  | "results_supplement_clicked"
+  | "supplement_stack_buy_clicked"
+  | "plan_to_coverage_clicked"
+  | "care_talk_to_someone_clicked"
+  | "care_find_specialist_clicked"
+  | "care_shop_stack_clicked"
   | "pageview";

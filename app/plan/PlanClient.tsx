@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { track } from "@/lib/posthog";
 import { FertilityPlan } from "@/types";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
-import { CheckCircle, Circle, Pill, Dumbbell, Moon, Thermometer, FlaskConical, Calendar, ShoppingCart, MapPin } from "lucide-react";
+import { CheckCircle, Circle, Pill, Dumbbell, Moon, Thermometer, FlaskConical, Calendar, ShoppingCart, MapPin, ArrowRight } from "lucide-react";
 
 interface Props {
   initialPlan: FertilityPlan | null;
@@ -228,6 +229,26 @@ export default function PlanClient({ initialPlan, userId: _userId, province }: P
         <h2 className="text-sm font-semibold text-charcoal-600 uppercase tracking-wide mb-3">
           <span className="flex items-center gap-2"><Pill size={15} /> Supplement Stack</span>
         </h2>
+        <Card padding="sm" className="mb-2.5">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+              <Pill size={16} className="text-teal-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-charcoal-800">Your full stack in one order</p>
+              <p className="text-xs text-charcoal-500">CoQ10 · Zinc · Vitamin D3 · Omega-3 · Folate · L-Carnitine</p>
+            </div>
+          </div>
+          <a
+            href="https://www.amazon.ca/s?k=male+fertility+supplement+stack+CoQ10+zinc&i=hpc&tag=ferttrack-20"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("supplement_stack_buy_clicked")}
+            className="mt-3 flex items-center justify-center gap-1.5 w-full bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-sm font-semibold rounded-xl py-2.5 transition-colors"
+          >
+            <ShoppingCart size={14} /> Buy this week&apos;s stack
+          </a>
+        </Card>
         <div className="space-y-2.5">
           {SUPPLEMENTS.map((s) => (
             <Card key={s.name} padding="sm">
@@ -261,6 +282,22 @@ export default function PlanClient({ initialPlan, userId: _userId, province }: P
           Always discuss supplements with your doctor before starting, especially if you take other medications.
           Amazon.ca links are for convenience - compare prices and read reviews before purchasing.
         </p>
+      </div>
+
+      {/* Next step: plan → coverage */}
+      <div className="rounded-3xl bg-gradient-to-br from-teal-600 to-teal-800 p-5">
+        <p className="text-teal-100 text-xs font-bold uppercase tracking-wider">While you build habits</p>
+        <p className="text-white text-base font-bold mt-1">Determine your coverage</p>
+        <p className="text-teal-100 text-sm mt-1 leading-relaxed">
+          Most of your journey is OHIP-covered. Find out what&apos;s funded before your retest.
+        </p>
+        <Link
+          href="/care"
+          onClick={() => track("plan_to_coverage_clicked")}
+          className="mt-3.5 flex items-center justify-center gap-1.5 w-full bg-white text-teal-700 hover:bg-teal-50 text-sm font-semibold rounded-xl py-2.5 transition-colors"
+        >
+          Check my coverage <ArrowRight size={14} />
+        </Link>
       </div>
 
       {/* Habit goals */}

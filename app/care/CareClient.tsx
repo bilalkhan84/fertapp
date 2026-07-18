@@ -16,6 +16,8 @@ import {
   CheckCircle,
   Info,
   MapPin,
+  MessageCircle,
+  ShoppingCart,
 } from "lucide-react";
 
 const CARE_STEPS = [
@@ -227,9 +229,31 @@ export default function CareClient({ province }: Props) {
           </div>
         </Card>
         <p className="text-xs text-charcoal-400 mt-2 px-1">
-          Coverage details change. Always confirm with your provider and OHIP directly. Last reviewed 2025.
+          Coverage details change. Always confirm with your provider and OHIP directly. Last reviewed July 2026.
         </p>
       </div>
+
+      {/* Not sure where you stand? */}
+      <Card>
+        <p className="text-sm font-bold text-charcoal-800 mb-1.5">Not sure where you stand?</p>
+        <p className="text-xs text-charcoal-500 leading-relaxed mb-3.5">
+          Get help interpreting your coverage, finding a specialist, or talking to someone about next steps.
+        </p>
+        <Link
+          href="/support"
+          onClick={() => track("care_talk_to_someone_clicked", { placement: "card" })}
+          className="flex items-center justify-center gap-1.5 w-full bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-sm font-semibold rounded-xl py-2.5 transition-colors"
+        >
+          <MessageCircle size={14} /> Talk to someone
+        </Link>
+        <a
+          href="#specialists"
+          onClick={() => track("care_find_specialist_clicked")}
+          className="mt-2 flex items-center justify-center gap-1.5 w-full bg-teal-50 hover:bg-teal-100 active:bg-teal-200 text-teal-700 text-sm font-semibold rounded-xl py-2.5 transition-colors"
+        >
+          <MapPin size={14} /> Find a specialist near you
+        </a>
+      </Card>
 
       {/* Specialist matching */}
       <div id="specialists">
@@ -318,6 +342,26 @@ export default function CareClient({ province }: Props) {
               </Card>
             </a>
           ))}
+        </div>
+      </div>
+
+      {/* Sticky revenue actions — sits above the mobile bottom nav */}
+      <div className="sticky bottom-24 md:bottom-4 z-30">
+        <div className="bg-white border border-charcoal-200 rounded-2xl p-2 flex gap-2 shadow-lg">
+          <Link
+            href="/support"
+            onClick={() => track("care_talk_to_someone_clicked", { placement: "sticky" })}
+            className="flex-1 flex items-center justify-center gap-1.5 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-xs font-semibold rounded-xl py-2.5 transition-colors"
+          >
+            <MessageCircle size={13} /> Talk to someone
+          </Link>
+          <Link
+            href="/plan"
+            onClick={() => track("care_shop_stack_clicked")}
+            className="flex-1 flex items-center justify-center gap-1.5 bg-teal-50 hover:bg-teal-100 active:bg-teal-200 text-teal-700 text-xs font-semibold rounded-xl py-2.5 transition-colors"
+          >
+            <ShoppingCart size={13} /> Shop your stack
+          </Link>
         </div>
       </div>
     </div>
