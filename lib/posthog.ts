@@ -81,4 +81,6 @@ export type AppEvent =
   | "care_talk_to_someone_clicked"
   | "care_find_specialist_clicked"
   | "care_shop_stack_clicked"
+  | "signed_out"
+  | "account_delete_requested"
   | "pageview";

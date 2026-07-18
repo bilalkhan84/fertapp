@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { resetUser } from "@/lib/posthog";
+import { resetUser, track } from "@/lib/posthog";
 import { Profile } from "@/types";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
@@ -15,6 +15,7 @@ import {
   Shield,
   CheckCircle,
   AlertCircle,
+  Trash2,
 } from "lucide-react";
 
 const PROVINCES = [
@@ -44,6 +45,10 @@ export default function AccountClient({ profile }: Props) {
   const [saving, setSaving] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saved" | "error">("idle");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   async function handleSave() {
     setSaving(true);
@@ -69,6 +74,29 @@ export default function AccountClient({ profile }: Props) {
     await supabase.auth.signOut();
     resetUser();
     router.push("/login");
+  }
+
+  async function handleDeleteAccount() {
+    setDeleting(true);
+    setDeleteError(null);
+    track("account_delete_requested");
+    try {
+      const res = await fetch("/api/account/delete", { method: "POST" });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setDeleteError(body.error ?? "Couldn't delete the account. Please try again.");
+        setDeleting(false);
+        return;
+      }
+      // Account is gone — clear the local session and leave
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      resetUser();
+      router.push("/login");
+    } catch {
+      setDeleteError("Couldn't delete the account. Please try again.");
+      setDeleting(false);
+    }
   }
 
   const hasChanges =
@@ -268,6 +296,69 @@ export default function AccountClient({ profile }: Props) {
           <LogOut size={15} />
           Sign out
         </Button>
+      </Card>
+
+      {/* Danger zone — delete account */}
+      <Card className="border-red-200">
+        <h2 className="text-sm font-semibold text-red-600 uppercase tracking-wide mb-3">
+          Danger zone
+        </h2>
+        <p className="text-xs text-charcoal-500 mb-4 leading-relaxed">
+          Permanently delete your FertTrack account. All of your data — results,
+          plan, daily check-ins, and profile — will be erased. This cannot be undone.
+        </p>
+
+        {!showDeleteConfirm ? (
+          <Button
+            variant="danger"
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full sm:w-auto"
+          >
+            <Trash2 size={15} />
+            Delete my account
+          </Button>
+        ) : (
+          <div className="space-y-3">
+            <label className="block text-xs font-semibold text-charcoal-600">
+              Type <span className="font-mono text-red-600">DELETE</span> to confirm
+            </label>
+            <input
+              type="text"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder="DELETE"
+              autoComplete="off"
+              className="w-full px-4 py-2.5 rounded-xl border border-red-200 text-sm text-charcoal-800 placeholder-charcoal-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent transition"
+            />
+            {deleteError && (
+              <p className="flex items-center gap-1.5 text-xs text-red-500 font-medium">
+                <AlertCircle size={14} /> {deleteError}
+              </p>
+            )}
+            <div className="flex items-center gap-2">
+              <Button
+                variant="danger"
+                onClick={handleDeleteAccount}
+                loading={deleting}
+                disabled={deleteConfirmText !== "DELETE" || deleting}
+              >
+                <Trash2 size={15} />
+                Permanently delete
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setDeleteConfirmText("");
+                  setDeleteError(null);
+                }}
+                disabled={deleting}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
       </Card>
     </div>
   );

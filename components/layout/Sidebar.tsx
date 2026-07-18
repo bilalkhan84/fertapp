@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { resetUser, track } from "@/lib/posthog";
 import {
   LayoutDashboard,
   FlaskConical,
@@ -11,6 +14,7 @@ import {
   UserCircle,
   Leaf,
   X,
+  LogOut,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -31,6 +35,17 @@ interface Props {
 
 export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose, onToggleDesktop }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    track("signed_out", { placement: "sidebar" });
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    resetUser();
+    router.push("/login");
+  }
 
   return (
     <aside
@@ -90,6 +105,16 @@ export default function Sidebar({ isOpen = false, isDesktopOpen = true, onClose,
           );
         })}
       </nav>
+
+      {/* Sign out — pinned to drawer bottom */}
+      <button
+        onClick={handleSignOut}
+        disabled={signingOut}
+        className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-charcoal-600 hover:bg-red-50 hover:text-red-600 transition-colors duration-100 disabled:opacity-50 mt-2 border-t border-charcoal-100 pt-4 w-full text-left"
+      >
+        <LogOut size={18} className="w-4.5 h-4.5 flex-shrink-0" />
+        {signingOut ? "Signing out…" : "Sign out"}
+      </button>
     </aside>
   );
 }
