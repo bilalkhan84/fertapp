@@ -48,6 +48,18 @@ export async function middleware(request: NextRequest) {
   );
   const isLoginPage = pathname === "/login";
 
+  // Self-heal: if an OAuth code lands on /login (e.g. Supabase redirect
+  // allow-list didn't match this domain and bounced the user back here),
+  // forward it to the callback handler that knows how to exchange it.
+  if (isLoginPage && request.nextUrl.searchParams.has("code")) {
+    const cbUrl = request.nextUrl.clone();
+    cbUrl.pathname = "/auth/callback";
+    const dest = request.nextUrl.searchParams.get("redirectTo");
+    cbUrl.searchParams.delete("redirectTo");
+    if (dest) cbUrl.searchParams.set("next", dest);
+    return NextResponse.redirect(cbUrl);
+  }
+
   // Public marketing pages (/, /contact, /blog, /api/*, etc.) don't need a
   // session at all — skip the Supabase round trip entirely so they load as
   // fast as a static page. Only protected routes and /login (which redirects
