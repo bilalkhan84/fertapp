@@ -127,7 +127,7 @@ function getRecommendations(result: SemenResult | null, todayActs: DailyActions 
         bgColor: "bg-green-50",
         title: "Boost motility: CoQ10 + cardio",
         body: `Motility at ${result.motility}% (${motilityCat}). CoQ10 and L-Carnitine fuel sperm movement — add them to your stack.`,
-        cta: { label: "Buy CoQ10", href: "https://www.amazon.ca/s?k=CoQ10+Ubiquinol+200mg&i=hpc", external: true },
+        cta: { label: "Buy CoQ10", href: "https://www.amazon.ca/s?k=CoQ10+Ubiquinol+200mg&i=hpc&tag=ferttrack-20", external: true },
       });
     }
 
@@ -151,7 +151,7 @@ function getRecommendations(result: SemenResult | null, todayActs: DailyActions 
         bgColor: "bg-purple-50",
         title: "Support morphology with folate",
         body: `Morphology at ${result.morphology}% (${morphCat}). Add 5-MTHF methylfolate to reduce DNA fragmentation.`,
-        cta: { label: "Buy Folate", href: "https://www.amazon.ca/s?k=5-MTHF+methylfolate+supplement&i=hpc", external: true },
+        cta: { label: "Buy Folate", href: "https://www.amazon.ca/s?k=5-MTHF+methylfolate+supplement&i=hpc&tag=ferttrack-20", external: true },
       });
     }
 
